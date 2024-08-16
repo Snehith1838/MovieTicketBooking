@@ -72,14 +72,22 @@ public class TicketBooking {
         String showTimings = showTimeList[showTime-1];
 
         System.out.println(" ");
+        System.out.println("Theater : "+theateName+"                 "+"Show Time : " + showTimings);
+        for(int i=0;i<10;i++){
+            System.out.println("|   " + "|_| ".repeat(5) + "     " + " |_|".repeat(5) + "   |");
+        }
+        System.out.println(" --------------------------------------------------- ");
+        System.out.println("|                      SCREEN                       |");
+        System.out.println(" --------------------------------------------------- ");
+
+        System.out.println(" ");
         System.out.println("select number of seats:");
         int x = scn.nextInt();
         scn.nextLine();
         int numberOfSeats = x;
 
         System.out.println(" ");
-        System.out.println("Available seats for " + showTimings +" show are:-");
-
+        System.out.println("Available seats :-");
         String[] availableSeats = {"a1","a2","a4","b1","b2","b3","c3","c4","c5","d1","d5"};
         String[] bookedSeats = {"a3","a5","b4","b5","c1","c2","d2","d3","d4"};
         System.out.println(Arrays.toString(availableSeats));
@@ -119,6 +127,7 @@ public class TicketBooking {
 
         System.out.println(" ");
         System.out.println("*** Your Booking Conformed ***");
+        System.out.println("    ----------------------    ");
         System.out.println(" ");
         System.out.println("Booking Details:-");
         System.out.println("-----------------");
@@ -127,7 +136,10 @@ public class TicketBooking {
         System.out.println("Seat Numbers: " + Arrays.toString(myBookingSeats));
         System.out.println("Theater Name: "+theateName);
         System.out.println("Location :"+locationName);
-
+        System.out.println(" ");
+        System.out.println("--------------------------");
+        System.out.println("         THANKYOU         ");
+        System.out.println("--------------------------");
 
     }
 
