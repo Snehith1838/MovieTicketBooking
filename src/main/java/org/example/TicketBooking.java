@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 public class TicketBooking {
     public static void main(String[] args) {
-        System.out.println("*********************************");
-        System.out.println("*           WELCOME TO          *");
-        System.out.println("*         THEATER TICKET        *");
-        System.out.println("*********************************");
+        System.out.println("********************************");
+        System.out.println("*          WELCOME TO          *");
+        System.out.println("*         MOVIE BOOKING        *");
+        System.out.println("********************************");
         Scanner scn = new Scanner(System.in);
 
         //showing locations
@@ -71,47 +71,57 @@ public class TicketBooking {
         int showTime = scn.nextInt();
         String showTimings = showTimeList[showTime-1];
 
-        System.out.println(" ");
-        System.out.println("Theater : "+theateName+"                 "+"Show Time : " + showTimings);
-        for(int i=0;i<10;i++){
-            System.out.println("|   " + "|_| ".repeat(5) + "     " + " |_|".repeat(5) + "   |");
+        String[] rows = {"a","b","c","d","e","f","g","h"};
+        String[][] availableSeats = {{"a1","a2","a4","a6","a7","a8"},{"b1","b2","b3","b6","b8"},{"c3","c4","c6","c8"},{"d1","d5","d6"},{"e1","e2","e3","e4","e6","e7"},{"f1","f2","f3","f6","f7","f8"},{"g1","g2","g3","g4"},{"h1","h2","h3","h4","h5","h6","h7","h8"}};
+        String[] bookedSeats = {"a3","a5","b4","b5","c1","c2","d2","d3","d4","b7","c5","c7","d7","d8","e5","e8","f4","f5","g5","g6","g7","g8"};
+        String[] layout = new String[rows.length];
+        for(int i=0;i< rows.length;i++){
+            String eachRow= "|  " + rows[i] + "-|1| |2| |3| |4|       |5| |6| |7| |8|   |";
+            layout[i] = eachRow;
         }
-        System.out.println(" --------------------------------------------------- ");
-        System.out.println("|                      SCREEN                       |");
-        System.out.println(" --------------------------------------------------- ");
+
+        //already booked seats
+        System.out.println(" ");
+        System.out.println("'#' shows the booked seats");
+        System.out.println(" ");
+        bookingSeats(bookedSeats,rows,layout);
+
+//        System.out.println(" ");
+//        System.out.println("Available seats :-");
+//        for(String[] availableRowSeats:availableSeats){
+//            System.out.println(Arrays.toString(availableRowSeats));
+//        }
+//        System.out.println(" ");
+//        System.out.println("Booked seats :-");
+//        System.out.println(Arrays.toString(bookedSeats));
+
 
         System.out.println(" ");
-        System.out.println("select number of seats:");
-        int x = scn.nextInt();
+        System.out.println("enter no. of seats");
+        int totalSeats = scn.nextInt();
         scn.nextLine();
-        int numberOfSeats = x;
-
-        System.out.println(" ");
-        System.out.println("Available seats :-");
-        String[] availableSeats = {"a1","a2","a4","b1","b2","b3","c3","c4","c5","d1","d5"};
-        String[] bookedSeats = {"a3","a5","b4","b5","c1","c2","d2","d3","d4"};
-        System.out.println(Arrays.toString(availableSeats));
-        System.out.println("Booked seats :-");
-        System.out.println(Arrays.toString(bookedSeats));
-
-
-        String[] myBookingSeats = new String[x];
+        String[] inputSeats = new String[totalSeats];
         int j = 0;
-        System.out.println(" ");
-        for(int i=0;i<numberOfSeats;i++){
-           System.out.println("enter seat number:");
-           String seat = scn.nextLine();
-           for(String bookedSeat:bookedSeats){
-               if(seat.equals(bookedSeat)){
-                   System.out.println("this seat is already booked please select from available list");
-                   j = i;
-                   i--;
-               }
-           }
-           if(j-i!=1) {
-               myBookingSeats[i] = seat;
-           }
+        for(int i=0;i<totalSeats;i++){
+            System.out.println("enter seat no. "+(i+1));
+            String seat = scn.nextLine();
+            for(String bookedSeat:bookedSeats){
+                if(seat.equals(bookedSeat)){
+                    System.out.println("this seat is already booked please select from available seats");
+                    j = i;
+                    i--;
+                }
+            }
+            if(j-i!=1) {
+                inputSeats[i] = seat;
+            }
         }
+
+        System.out.println(" ");
+        System.out.println("selected seats : "+Arrays.toString(inputSeats));
+        System.out.println("verify your seats are changed as '#'");
+        System.out.println(" ");
+        bookingSeats(inputSeats,rows,layout);
 
         System.out.println(" ");
         System.out.println("Enter Your Mobile Number:");
@@ -133,7 +143,7 @@ public class TicketBooking {
         System.out.println("-----------------");
         System.out.println("Movie Name: "+movieName);
         System.out.println("Show Time: "+showTimings);
-        System.out.println("Seat Numbers: " + Arrays.toString(myBookingSeats));
+        System.out.println("Seat Numbers: " + Arrays.toString(inputSeats));
         System.out.println("Theater Name: "+theateName);
         System.out.println("Location :"+locationName);
         System.out.println(" ");
@@ -143,7 +153,9 @@ public class TicketBooking {
 
     }
 
-    private static void inputValidation(int length, String message) {
+
+
+    public static void inputValidation(int length, String message) {
         Scanner scn = new Scanner(System.in);
         for(int i=0;i<1;i++) {
             String phoneNumber = scn.nextLine();
@@ -154,7 +166,7 @@ public class TicketBooking {
         }
     }
 
-    private static String[] findList(String[][] list,int number) {
+    public static String[] findList(String[][] list,int number) {
         String[] location = list[number-1];
         int a = 1;
         for(String movies:location){
@@ -162,6 +174,36 @@ public class TicketBooking {
             a = a+1;
         }
         return location;
+    }
+
+    public static void bookingSeats(String[] bookings,String[] rows,String[] layout){
+        for(int i=0;i< bookings.length;i++) {
+            String seat = bookings[i];
+            String seatRow = seat.substring(0, 1);
+            String seatNumber = seat.substring(1);
+            int rowIndex = 0;
+            for (int j = 0; j < rows.length; j++) {
+                if (rows[j].equals(seatRow)) {
+                    rowIndex = j;
+                }
+            }
+            String row = layout[rowIndex];
+            char[] charArr = row.toCharArray();
+            for(int j=0;j<row.length();j++){
+                String x = String.valueOf(charArr[j]);
+                if(x.equals(seatNumber)){
+                    charArr[j] = '#';
+                }
+            }
+            layout[rowIndex] = String.valueOf(charArr);
+        }
+
+        for(String row:layout){
+            System.out.println(row);
+        }
+        System.out.println(" -------------------------------------------- ");
+        System.out.println("|                MOVIE SCREEN                |");
+        System.out.println(" -------------------------------------------- ");
     }
 
 }
