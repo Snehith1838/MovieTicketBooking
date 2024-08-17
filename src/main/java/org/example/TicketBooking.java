@@ -86,15 +86,6 @@ public class TicketBooking {
         System.out.println(" ");
         bookingSeats(bookedSeats,rows,layout);
 
-//        System.out.println(" ");
-//        System.out.println("Available seats :-");
-//        for(String[] availableRowSeats:availableSeats){
-//            System.out.println(Arrays.toString(availableRowSeats));
-//        }
-//        System.out.println(" ");
-//        System.out.println("Booked seats :-");
-//        System.out.println(Arrays.toString(bookedSeats));
-
 
         System.out.println(" ");
         System.out.println("enter no. of seats");
@@ -131,6 +122,7 @@ public class TicketBooking {
 
         }
 
+
         System.out.println(" ");
         System.out.println("selected seats : "+Arrays.toString(inputSeats));
         System.out.println(" ");
@@ -139,15 +131,15 @@ public class TicketBooking {
 
         System.out.println(" ");
         System.out.println("Enter Your 10 digit Mobile Number:");
-        String phoneError = "enter correct 10 digit mobile number";
-        int mobileNumberLength = 10;
-        inputValidation(mobileNumberLength,phoneError);
+        String mobileNumberFormat = "\\d{10}";
+        String mobileNumberErrorMessage = "enter a valid mobile number";
+        inputValidation(mobileNumberFormat,mobileNumberErrorMessage);
 
         System.out.println(" ");
-        System.out.println("Enter card details(format : xxxx xxxx xxxx xxxx):");
-        String cardError = "Enter Card details in this format (xxxx xxxx xxxx xxxx)";
-        int cardNumberLength = 19;
-        inputValidation(cardNumberLength,cardError);
+        System.out.println("enter card details(format : xxxx xxxx xxxx xxxx):");
+        String cardNumberFormat = "\\d{4} \\d{4} \\d{4} \\d{4}";
+        String cardNumberErrorMessage = "enter card details in this format(xxxx xxxx xxxx xxxx)";
+        inputValidation(cardNumberFormat,cardNumberErrorMessage);
 
         System.out.println(" ");
         System.out.println("*** Your Booking Conformed ***");
@@ -167,16 +159,16 @@ public class TicketBooking {
 
     }
 
-
-
     //validation
-    public static void inputValidation(int length, String message) {
+    public static void inputValidation(String format, String message) {
         Scanner scn = new Scanner(System.in);
-        for(int i=0;i<1;i++) {
-            String number = scn.nextLine();
-            if(number.length()!=length){
+        String number;
+        while (true){
+            number = scn.nextLine();
+            if(number.matches(format)){
+                break;
+            }else {
                 System.out.println(message);
-                i--;
             }
         }
     }
