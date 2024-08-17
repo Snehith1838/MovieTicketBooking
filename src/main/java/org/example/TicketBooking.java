@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class TicketBooking {
     public static void main(String[] args) {
         System.out.println("********************************");
-        System.out.println("*          WELCOME TO          *");
+        System.out.println("*         WELCOME TO          *");
         System.out.println("*         MOVIE BOOKING        *");
         System.out.println("********************************");
         Scanner scn = new Scanner(System.in);
@@ -76,13 +76,13 @@ public class TicketBooking {
         String[] bookedSeats = {"a3","a5","b4","b5","c1","c2","d2","d3","d4","b7","c5","c7","d7","d8","e5","e8","f4","f5","g5","g6","g7","g8"};
         String[] layout = new String[rows.length];
         for(int i=0;i< rows.length;i++){
-            String eachRow= "|  " + rows[i] + "-|1| |2| |3| |4|       |5| |6| |7| |8|   |";
+            String eachRow= "|   |"+rows[i] +"1| |"+rows[i] +"2| |"+rows[i] +"3| |"+rows[i] +"4|         |"+rows[i] +"5| |"+rows[i] +"6| |"+rows[i] +"7| |"+rows[i] +"8|   |";
             layout[i] = eachRow;
         }
 
         //already booked seats
         System.out.println(" ");
-        System.out.println("'#' shows the booked seats");
+        System.out.println("booked seats : '--'");
         System.out.println(" ");
         bookingSeats(bookedSeats,rows,layout);
 
@@ -103,35 +103,49 @@ public class TicketBooking {
         String[] inputSeats = new String[totalSeats];
         int j = 0;
         for(int i=0;i<totalSeats;i++){
-            System.out.println("enter seat no. "+(i+1));
+            System.out.println("enter seat no."+(i+1));
+            int seatConformation = 0;
             String seat = scn.nextLine();
             for(String bookedSeat:bookedSeats){
-                if(seat.equals(bookedSeat)){
+                if(seat.equalsIgnoreCase(bookedSeat)){
                     System.out.println("this seat is already booked please select from available seats");
                     j = i;
+                    seatConformation =1;
                     i--;
                 }
             }
             if(j-i!=1) {
                 inputSeats[i] = seat;
             }
+            for(String[] availableSeatRow:availableSeats){
+                for(String availableSeat:availableSeatRow){
+                    if(availableSeat.equalsIgnoreCase(seat)){
+                        seatConformation = 1;
+                    }
+                }
+            }
+            if(seatConformation == 0){
+                System.out.println("enter valid seat number (e.g., a1)");
+                i--;
+            }
+
         }
 
         System.out.println(" ");
         System.out.println("selected seats : "+Arrays.toString(inputSeats));
-        System.out.println("verify your seats are changed as '#'");
         System.out.println(" ");
         bookingSeats(inputSeats,rows,layout);
+        System.out.println("your seats are conformed.");
 
         System.out.println(" ");
-        System.out.println("Enter Your Mobile Number:");
+        System.out.println("Enter Your 10 digit Mobile Number:");
         String phoneError = "enter correct 10 digit mobile number";
         int mobileNumberLength = 10;
         inputValidation(mobileNumberLength,phoneError);
 
         System.out.println(" ");
-        System.out.println("Enter card details(xxxx xxxx xxxx xxxx):");
-        String cardError = "Enter Card numbers this format (xxxx xxxx xxxx xxxx)";
+        System.out.println("Enter card details(format : xxxx xxxx xxxx xxxx):");
+        String cardError = "Enter Card details in this format (xxxx xxxx xxxx xxxx)";
         int cardNumberLength = 19;
         inputValidation(cardNumberLength,cardError);
 
@@ -155,17 +169,19 @@ public class TicketBooking {
 
 
 
+    //validation
     public static void inputValidation(int length, String message) {
         Scanner scn = new Scanner(System.in);
         for(int i=0;i<1;i++) {
-            String phoneNumber = scn.nextLine();
-            if(phoneNumber.length()!=length){
+            String number = scn.nextLine();
+            if(number.length()!=length){
                 System.out.println(message);
                 i--;
             }
         }
     }
 
+    //list of elements
     public static String[] findList(String[][] list,int number) {
         String[] location = list[number-1];
         int a = 1;
@@ -176,34 +192,26 @@ public class TicketBooking {
         return location;
     }
 
+    //layout
     public static void bookingSeats(String[] bookings,String[] rows,String[] layout){
         for(int i=0;i< bookings.length;i++) {
             String seat = bookings[i];
             String seatRow = seat.substring(0, 1);
-            String seatNumber = seat.substring(1);
             int rowIndex = 0;
             for (int j = 0; j < rows.length; j++) {
-                if (rows[j].equals(seatRow)) {
+                if (rows[j].equalsIgnoreCase(seatRow)) {
                     rowIndex = j;
                 }
             }
-            String row = layout[rowIndex];
-            char[] charArr = row.toCharArray();
-            for(int j=0;j<row.length();j++){
-                String x = String.valueOf(charArr[j]);
-                if(x.equals(seatNumber)){
-                    charArr[j] = '#';
-                }
-            }
-            layout[rowIndex] = String.valueOf(charArr);
+            layout[rowIndex] = layout[rowIndex].replace(seat,"--");
         }
 
-        for(String row:layout){
-            System.out.println(row);
+        for(String updatedRow:layout){
+            System.out.println(updatedRow);
         }
-        System.out.println(" -------------------------------------------- ");
-        System.out.println("|                MOVIE SCREEN                |");
-        System.out.println(" -------------------------------------------- ");
+        System.out.println(" ----------------------------------------------------- ");
+        System.out.println("|                     MOVIE SCREEN                    |");
+        System.out.println(" ----------------------------------------------------- ");
     }
 
 }
